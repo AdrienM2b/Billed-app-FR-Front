@@ -14,7 +14,7 @@ export const filteredBills = (data, status) => {
         if (typeof jest !== 'undefined') {
           selectCondition = bill.status === status;
         } else {
-        /* istanbul ignore next */
+          /* istanbul ignore next */
           // in prod environment
           const userEmail = JSON.parse(localStorage.getItem('user')).email;
           selectCondition =
@@ -153,22 +153,13 @@ export default class {
       $(`#status-bills-container${this.index}`).html('');
       this.counter++;
     }
-
+    // ajout d'une suppression d'écouteur pour eviter d'executer handleEditTicket une deuxieme fois
+    $('[id^=open-bill]').off('click');
     bills.forEach((bill) => {
       $(`#open-bill${bill.id}`).click((e) =>
         this.handleEditTicket(e, bill, bills)
       );
     });
-
-    $(document).off('click', '[id^=open-bill]'); // Supprimer d'abord tout ancien écouteur pour éviter les doublons
-    $(document).on('click', '[id^=open-bill]', (e) => {
-      const billId = e.target.id.replace('open-bill', '');
-      const matchingBill = bills.find((b) => b.id === billId);
-      if (matchingBill) {
-        this.handleEditTicket(e, matchingBill, bills);
-      }
-    });
-
     return bills;
   }
 
