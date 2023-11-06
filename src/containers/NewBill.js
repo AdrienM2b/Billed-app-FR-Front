@@ -23,16 +23,17 @@ export default class NewBill {
       .files[0];
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length - 1];
-
-    // Vérifier l'extension du fichier
+    console.log(file.fileName);
+    // projet 9 Vérifier l'extension du fichier
     const validExtensions = ['jpg', 'jpeg', 'png'];
     const fileExtension = fileName.split('.').pop().toLowerCase();
     if (!validExtensions.includes(fileExtension)) {
-      // Afficher un message d'erreur à l'utilisateur
-      alert('Le fichier doit être au format jpg, jpeg ou png.');
+      const errorMessage = document.querySelector('.error-message');
+      errorMessage.classList.toggle('visible');
+      console.log('Extension de fichier non valide');
       return;
     }
-
+    console.log('Après le return');
     const formData = new FormData();
     const email = JSON.parse(localStorage.getItem('user')).email;
     formData.append('file', file);

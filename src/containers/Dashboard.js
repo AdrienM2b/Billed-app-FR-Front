@@ -153,7 +153,7 @@ export default class {
       $(`#status-bills-container${this.index}`).html('');
       this.counter++;
     }
-    // ajout d'une suppression d'écouteur pour eviter d'executer handleEditTicket une deuxieme fois
+    // projet 9 ajout d'une suppression d'écouteur pour eviter d'executer handleEditTicket une deuxieme fois
     $('[id^=open-bill]').off('click');
     bills.forEach((bill) => {
       $(`#open-bill${bill.id}`).click((e) =>
