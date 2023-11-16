@@ -139,7 +139,6 @@ describe('Given I am connected as an Admin', () => {
       expect(screen.getByTestId(`open-bill47qAXb6fIm2zOKkLzMro`)).toBeTruthy();
       const iconEdit = screen.getByTestId('open-bill47qAXb6fIm2zOKkLzMro');
       userEvent.click(iconEdit);
-      console.log(document);
       expect(screen.getByTestId('dashboard-form')).toBeTruthy();
     });
   });
@@ -320,6 +319,7 @@ describe('Given I am a user connected as Admin', () => {
       window.onNavigate(ROUTES_PATH.Dashboard);
       await waitFor(() => screen.getByText('Validations'));
       const contentPending = await screen.getByText('En attente (1)');
+      console.log(contentPending);
       expect(contentPending).toBeTruthy();
       const contentRefused = await screen.getByText('Refusé (2)');
       expect(contentRefused).toBeTruthy();
@@ -353,7 +353,7 @@ describe('Given I am a user connected as Admin', () => {
         });
         window.onNavigate(ROUTES_PATH.Dashboard);
         await new Promise(process.nextTick);
-        const message = await screen.getByText(/Erreur 404/);
+        const message = screen.getByText(/Erreur 404/);
         expect(message).toBeTruthy();
       });
 

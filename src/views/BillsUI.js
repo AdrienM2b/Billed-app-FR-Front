@@ -20,7 +20,6 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
-  console.log('data', data);
   if (data && data.length) {
     const sortedData = [...data].sort(
       (a, b) => new Date(a.date) - new Date(b.date)
