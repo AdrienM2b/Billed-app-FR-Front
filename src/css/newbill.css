@@ -66,12 +66,12 @@ select:focus {
   color: #0e5ae5 !important;
 }
 
-.hidden {
+.error-message {
   display: none;
 }
 
 .visible {
-  display: block;
+  display: block !important;
 }
 .red-text {
   color: red;

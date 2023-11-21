@@ -117,8 +117,8 @@ describe('Given I am a user connected as Employee', () => {
       });
 
       const instance = new Bills({
-        document, // Fournir un mock ou une référence appropriée
-        onNavigate, // Fournir un mock ou une référence appropriée
+        document,
+        onNavigate,
         store: mockStore,
         localStorage: localStorageMock,
       });

@@ -21,39 +21,37 @@ export default class NewBill {
     e.preventDefault();
     const file = this.document.querySelector(`input[data-testid="file"]`)
       .files[0];
-    const filePath = e.target.value.split(/\\/g);
-    const fileName = filePath[filePath.length - 1];
-    console.log(file.fileName);
     // projet 9 Vérifier l'extension du fichier
-    const validExtensions = ['jpg', 'jpeg', 'png'];
-    const fileExtension = fileName.split('.').pop().toLowerCase();
-    if (!validExtensions.includes(fileExtension)) {
-      const errorMessage = document.querySelector('.error-message');
-      errorMessage.classList.toggle('visible');
-      console.log('Extension de fichier non valide');
-      return;
+    const validMimeType = ['image/jpg', 'image/jpeg', 'image/png'];
+    const fileType = file.type;
+    const errorMessage = document.querySelector('.error-message');
+    if (validMimeType.includes(fileType)) {
+      const filePath = e.target.value.split(/\\/g);
+      const fileName = filePath[filePath.length - 1];
+      const formData = new FormData();
+      const email = JSON.parse(localStorage.getItem('user')).email;
+      formData.append('file', file);
+      formData.append('email', email);
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+        .then(({ fileUrl, key }) => {
+          console.log(fileUrl);
+          this.billId = key;
+          this.fileUrl = fileUrl;
+          this.fileName = fileName;
+        })
+        .catch((error) => console.error(error));
+      errorMessage.classList.remove('visible');
+    } else {
+      errorMessage.classList.add('visible');
+      e.target.value = '';
     }
-    console.log('Après le return');
-    const formData = new FormData();
-    const email = JSON.parse(localStorage.getItem('user')).email;
-    formData.append('file', file);
-    formData.append('email', email);
-
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true,
-        },
-      })
-      .then(({ fileUrl, key }) => {
-        console.log(fileUrl);
-        this.billId = key;
-        this.fileUrl = fileUrl;
-        this.fileName = fileName;
-      })
-      .catch((error) => console.error(error));
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -80,6 +78,7 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending',
     };
+    console.log('bill', bill);
     this.updateBill(bill);
     this.onNavigate(ROUTES_PATH['Bills']);
   };
