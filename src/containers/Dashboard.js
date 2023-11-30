@@ -95,6 +95,7 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
+    // projet 9 ajout d'une suppression des compteurs sinon la fonction compte 2 fois le listener
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
     if (this.counter % 2 === 0) {
@@ -104,7 +105,6 @@ export default class {
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' });
       $('.dashboard-right-container div').html(DashboardFormUI(bill));
       $('.vertical-navbar').css({ height: '150vh' });
-      this.counter++;
     } else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' });
 
@@ -112,8 +112,8 @@ export default class {
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `);
       $('.vertical-navbar').css({ height: '120vh' });
-      this.counter++;
     }
+
     $('#icon-eye-d').click(this.handleClickIconEye);
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill));
     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill));
@@ -147,14 +147,12 @@ export default class {
       $(`#status-bills-container${this.index}`).html(
         cards(filteredBills(bills, getStatus(this.index)))
       );
-      this.counter++;
+      // this.counter++;
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)' });
       $(`#status-bills-container${this.index}`).html('');
-      this.counter++;
+      // this.counter++;
     }
-    // projet 9 ajout d'une suppression d'écouteur pour eviter d'executer handleEditTicket une deuxieme fois
-    $('[id^=open-bill]').off('click');
     bills.forEach((bill) => {
       $(`#open-bill${bill.id}`).click((e) =>
         this.handleEditTicket(e, bill, bills)
