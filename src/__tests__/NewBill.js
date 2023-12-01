@@ -127,6 +127,43 @@ describe('Given I am connected as an employee', () => {
 
         expect(consoleSpy).toHaveBeenCalled();
         expect(consoleMessage).toContain('Erreur 404');
+
+        jest.clearAllMocks();
+      });
+      test('Then if data are corrupted an error should be catched', async () => {
+        jest
+          .spyOn(mockStore.bills(), 'create')
+          .mockRejectedValueOnce(new Error('Erreur 500'));
+
+        const html = NewBillUI();
+        document.body.innerHTML = html;
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+        const newBill = new NewBill({
+          document,
+          onNavigate,
+          store: mockStore,
+          localStorage: localStorageMock,
+        });
+
+        const consoleSpy = jest.spyOn(console, 'error');
+
+        const handleChangeFile1 = jest.fn(newBill.handleChangeFile);
+        const file = new File(['document'], 'image.png', {
+          type: 'image/png',
+        });
+        const input = screen.getByTestId('file');
+
+        input.addEventListener('change', handleChangeFile1);
+        userEvent.upload(input, file);
+
+        await new Promise(process.nextTick);
+
+        const consoleMessage = consoleSpy.mock.calls[0][0].message;
+
+        expect(consoleSpy).toHaveBeenCalled();
+        expect(consoleMessage).toContain('Erreur 500');
       });
       test('Then I submit the form and bill should be updated', () => {
         jest.spyOn(mockStore.bills(), 'update').mockResolvedValueOnce(() => {
