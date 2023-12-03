@@ -93,7 +93,7 @@ describe('Given I am connected as an employee', () => {
         // ici on veut verifier que la methode create a bien été appelé pour créer une bill
         expect(mockStore.bills().create).toHaveBeenCalled();
       });
-      test('Then if data are corrupted an error should be catched', async () => {
+      test('Then if data are corrupted an error 404 should be catched', async () => {
         jest
           .spyOn(mockStore.bills(), 'create')
           .mockRejectedValueOnce(new Error('Erreur 404'));
@@ -130,7 +130,7 @@ describe('Given I am connected as an employee', () => {
 
         jest.clearAllMocks();
       });
-      test('Then if data are corrupted an error should be catched', async () => {
+      test('Then if data are corrupted an error 500 should be catched', async () => {
         jest
           .spyOn(mockStore.bills(), 'create')
           .mockRejectedValueOnce(new Error('Erreur 500'));
